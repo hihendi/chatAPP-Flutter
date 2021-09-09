@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "101936669184",
+    "project_id": "chatapp-salsh",
+    "storage_bucket": "chatapp-salsh.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:101936669184:android:4f0d5737da4138a096eee5",
+        "android_client_info": {
+          "package_name": "com.salsh.chatapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "101936669184-87ldc74n41mnp1tj6u05n3mv84ukfvfb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.salsh.chatapp",
+            "certificate_hash": "5dfe971b559deddc0163c069725f40a855d03bb6"
+          }
+        },
+        {
+          "client_id": "101936669184-n5m46jn2dcnf018p8ag35kvi7d65lacf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClKlboiD0nNjVFnSWhw9DP8lLlcIUAKug"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "101936669184-n5m46jn2dcnf018p8ag35kvi7d65lacf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
