@@ -49,25 +49,29 @@ class ProfileView extends GetView<ProfileController> {
                       ),
                       height: Get.width * 0.5,
                       width: Get.width * 0.5,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(Get.width * 0.3),
-                        color: Colors.black38,
-                        image: DecorationImage(
-                          image: AssetImage("assets/logo/noimage.png"),
-                          fit: BoxFit.cover,
-                        ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(200),
+                        child: (authController.usersModel.photoUrl == null)
+                            ? Image.asset(
+                                "assets/logo/noimage.png",
+                                fit: BoxFit.cover,
+                              )
+                            : Image.network(
+                                authController.usersModel.photoUrl!,
+                                fit: BoxFit.cover,
+                              ),
                       ),
                     ),
                   ),
                   Text(
-                    "Lorem Ipsum",
+                    "${authController.usersModel.name}",
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   Text(
-                    "lorem.ipsum@gmail.com",
+                    "${authController.usersModel.email}",
                     style: TextStyle(
                       fontSize: 20,
                     ),

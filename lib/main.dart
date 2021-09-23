@@ -12,52 +12,37 @@ import 'app/utils/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   await GetStorage.init();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
-
-  final authController = Get.put(AuthController());
+  final authController = Get.put(AuthController(), permanent: true);
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      // Initialize FlutterFire:
-      future: _initialization,
+      future: Future.delayed(Duration(seconds: 4)),
       builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return ErrorScreen();
-        }
-
         if (snapshot.connectionState == ConnectionState.done) {
-          return FutureBuilder(
-            future: Future.delayed(Duration(seconds: 4)),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                return Obx(
-                  () => GetMaterialApp(
-                    debugShowCheckedModeBanner: false,
-                    title: "Chat App",
-                    initialRoute: authController.isSkipIntro.isTrue
-                        ? authController.isAuth.isTrue
-                            ? Routes.HOME
-                            : Routes.LOGIN
-                        : Routes.INTRODUCTION,
-                    getPages: AppPages.routes,
-                  ),
-                );
-              }
-
-              return FutureBuilder(
-                  future: authController.firstInitialized(),
-                  builder: (BuildContext context, AsyncSnapshot snapshot) =>
-                      SplashScreen());
-            },
+          return Obx(
+            () => GetMaterialApp(
+              debugShowCheckedModeBanner: false,
+              title: "Chat App",
+              initialRoute: authController.isSkipIntro.isTrue
+                  ? authController.isAuth.isTrue
+                      ? Routes.HOME
+                      : Routes.LOGIN
+                  : Routes.INTRODUCTION,
+              getPages: AppPages.routes,
+            ),
           );
         }
 
-        return LoadingScreen();
+        return FutureBuilder(
+            future: authController.firstInitialized(),
+            builder: (BuildContext context, AsyncSnapshot snapshot) =>
+                SplashScreen());
       },
     );
   }
