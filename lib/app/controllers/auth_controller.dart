@@ -142,7 +142,8 @@ class AuthController extends GetxController {
         if (userFirestore.data() == null) {
           users.doc(credentialUser.user!.email).set({
             "uid": credentialUser.user!.uid,
-            "name": credentialUser.user!.displayName,
+            "name":
+                credentialUser.user!.displayName!.substring(0, 1).toUpperCase(),
             "email": credentialUser.user!.email,
             "photoUrl": credentialUser.user!.photoURL ?? "no image",
             "status": "",
