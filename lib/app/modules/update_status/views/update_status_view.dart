@@ -1,3 +1,4 @@
+import 'package:chatapp/app/controllers/auth_controller.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -5,8 +6,12 @@ import 'package:get/get.dart';
 import '../controllers/update_status_controller.dart';
 
 class UpdateStatusView extends GetView<UpdateStatusController> {
+  final authController = Get.find<AuthController>();
   @override
   Widget build(BuildContext context) {
+    controller.updateStatusController.text =
+        authController.usersModel.value.status!;
+    print(controller.updateStatusController.text);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.pink[400],
@@ -25,6 +30,10 @@ class UpdateStatusView extends GetView<UpdateStatusController> {
           children: [
             TextField(
               controller: controller.updateStatusController,
+              textInputAction: TextInputAction.done,
+              onEditingComplete: () {
+                controller.changeStatus(controller.updateStatusController.text);
+              },
               cursorColor: Colors.black,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
@@ -57,7 +66,10 @@ class UpdateStatusView extends GetView<UpdateStatusController> {
                     primary: Colors.pink[400],
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(100))),
-                onPressed: () {},
+                onPressed: () {
+                  controller
+                      .changeStatus(controller.updateStatusController.text);
+                },
                 child: Text(
                   "UPDATE",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),

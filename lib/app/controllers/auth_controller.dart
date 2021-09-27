@@ -2,6 +2,7 @@ import 'package:chatapp/app/data/models/users_model_model.dart';
 import 'package:chatapp/app/routes/app_pages.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -11,8 +12,10 @@ class AuthController extends GetxController {
   var isAuth = false.obs;
   GoogleSignIn _googleSignIn = GoogleSignIn();
   GoogleSignInAccount? _userAccount;
+  UserCredential? userCredential;
 
-  UsersModel usersModel = UsersModel();
+  //usermodel kita jadikan obs karena untuk di observasi di getx
+  var usersModel = UsersModel().obs;
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
@@ -52,8 +55,9 @@ class AuthController extends GetxController {
         //Ini untuk mengirimkan credential ke firebase authentication
         final credentialUser = await FirebaseAuth.instance
             .signInWithCredential(credential)
-            .then((value) => value);
+            .then((value) => userCredential = value);
 
+        //Ini fungsi untuk mengambil memasukkan collection firestore ke variable users
         CollectionReference users = firestore.collection("users");
 
         //ini fungsi untuk get data dari firestore
@@ -65,7 +69,8 @@ class AuthController extends GetxController {
 
         final toUserModel = userFirestore.data() as Map<String, dynamic>;
 
-        usersModel = UsersModel(
+        //cara observasi diuntuk model, update semua parameter ke model UserModel
+        usersModel(UsersModel(
           uid: toUserModel["uid"],
           name: toUserModel["name"],
           email: toUserModel["email"],
@@ -74,7 +79,7 @@ class AuthController extends GetxController {
           creationTime: toUserModel["creationTime"],
           lastSignInTime: toUserModel["lastSignInTime"],
           updatedTime: toUserModel["updatedTime"],
-        );
+        ));
 
         return true;
       }
@@ -117,7 +122,7 @@ class AuthController extends GetxController {
         //Ini untuk mengirimkan credential ke firebase authentication
         final credentialUser = await FirebaseAuth.instance
             .signInWithCredential(credential)
-            .then((value) => value);
+            .then((value) => userCredential = value);
 
         //Ini untuk menyimpan ke local memory hp bahwa status user pernah login dan tidak menampilkan introduction screen lagi
         GetStorage box = GetStorage();
@@ -155,7 +160,8 @@ class AuthController extends GetxController {
         }
         final toUserModel = userFirestore.data() as Map<String, dynamic>;
 
-        usersModel = UsersModel(
+        //cara observasi diuntuk model, update semua parameter ke model UserModel
+        usersModel(UsersModel(
           uid: toUserModel["uid"],
           name: toUserModel["name"],
           email: toUserModel["email"],
@@ -164,7 +170,7 @@ class AuthController extends GetxController {
           creationTime: toUserModel["creationTime"],
           lastSignInTime: toUserModel["lastSignInTime"],
           updatedTime: toUserModel["updatedTime"],
-        );
+        ));
 
         print("BERHASIL LOGIN");
         print(credentialUser);

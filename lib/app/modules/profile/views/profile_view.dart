@@ -51,31 +51,32 @@ class ProfileView extends GetView<ProfileController> {
                       width: Get.width * 0.5,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(200),
-                        child: (authController.usersModel.photoUrl == null)
-                            ? Image.asset(
-                                "assets/logo/noimage.png",
-                                fit: BoxFit.cover,
-                              )
-                            : Image.network(
-                                authController.usersModel.photoUrl!,
-                                fit: BoxFit.cover,
-                              ),
+                        child:
+                            (authController.usersModel.value.photoUrl == null)
+                                ? Image.asset(
+                                    "assets/logo/noimage.png",
+                                    fit: BoxFit.cover,
+                                  )
+                                : Image.network(
+                                    authController.usersModel.value.photoUrl!,
+                                    fit: BoxFit.cover,
+                                  ),
                       ),
                     ),
                   ),
-                  Text(
-                    "${authController.usersModel.name}",
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    "${authController.usersModel.email}",
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
-                  ),
+                  Obx(() => Text(
+                        "${authController.usersModel.value.name}",
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )),
+                  Obx(() => Text(
+                        "${authController.usersModel.value.email}",
+                        style: TextStyle(
+                          fontSize: 20,
+                        ),
+                      )),
                 ],
               ),
             ),

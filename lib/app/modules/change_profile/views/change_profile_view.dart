@@ -1,4 +1,5 @@
 import 'package:avatar_glow/avatar_glow.dart';
+import 'package:chatapp/app/controllers/auth_controller.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -6,8 +7,17 @@ import 'package:get/get.dart';
 import '../controllers/change_profile_controller.dart';
 
 class ChangeProfileView extends GetView<ChangeProfileController> {
+  final authController = Get.find<AuthController>();
+
   @override
   Widget build(BuildContext context) {
+    controller.emailController.text =
+        authController.usersModel.value.email ?? "Data Not Found";
+    controller.nameController.text =
+        authController.usersModel.value.name ?? "Data Not Found";
+    controller.statusController.text =
+        authController.usersModel.value.status ?? "";
+    print(authController.usersModel.value.status);
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.pink[400],
@@ -20,7 +30,10 @@ class ChangeProfileView extends GetView<ChangeProfileController> {
           title: Text('Change Profile'),
           actions: [
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                controller.changeProfile(controller.nameController.text,
+                    controller.statusController.text);
+              },
               icon: Icon(Icons.save),
             ),
           ],
@@ -30,21 +43,28 @@ class ChangeProfileView extends GetView<ChangeProfileController> {
           child: ListView(
             children: [
               AvatarGlow(
-                glowColor: Colors.black45,
+                endRadius: Get.width * 0.3,
+                glowColor: Colors.black54,
+                duration: Duration(seconds: 1),
                 child: Container(
-                  width: Get.width * 0.35,
-                  height: Get.width * 0.35,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(100),
-                    color: Colors.black38,
-                    image: DecorationImage(
-                      image: AssetImage("assets/logo/noimage.png"),
-                      fit: BoxFit.cover,
-                    ),
+                  margin: EdgeInsets.all(
+                    20,
+                  ),
+                  height: Get.width * 0.5,
+                  width: Get.width * 0.5,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(200),
+                    child: (authController.usersModel.value.photoUrl == null)
+                        ? Image.asset(
+                            "assets/logo/noimage.png",
+                            fit: BoxFit.cover,
+                          )
+                        : Image.network(
+                            authController.usersModel.value.photoUrl!,
+                            fit: BoxFit.cover,
+                          ),
                   ),
                 ),
-                endRadius: Get.width * 0.2,
-                duration: Duration(seconds: 1),
               ),
               SizedBox(
                 height: 50,
@@ -72,6 +92,7 @@ class ChangeProfileView extends GetView<ChangeProfileController> {
               ),
               TextField(
                 controller: controller.nameController,
+                textInputAction: TextInputAction.next,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(100),
@@ -89,6 +110,11 @@ class ChangeProfileView extends GetView<ChangeProfileController> {
               ),
               TextField(
                 controller: controller.statusController,
+                textInputAction: TextInputAction.done,
+                onEditingComplete: () {
+                  controller.changeProfile(controller.nameController.text,
+                      controller.statusController.text);
+                },
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(100),
@@ -139,7 +165,10 @@ class ChangeProfileView extends GetView<ChangeProfileController> {
                       borderRadius: BorderRadius.circular(100),
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    controller.changeProfile(controller.nameController.text,
+                        controller.statusController.text);
+                  },
                   child: Text(
                     "UPDATE",
                     style: TextStyle(
