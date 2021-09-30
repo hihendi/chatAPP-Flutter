@@ -24,10 +24,10 @@ class SearchController extends GetxController {
 
       //mengecek apakah data query kosong dan inputan textfield hanya mengetik 1 huruf
       if (queryAwal.length == 0 && data.length == 1) {
-        CollectionReference clients = await firestore.collection("clients");
+        CollectionReference users = await firestore.collection("users");
 
         //ini untuk mengecek apakah keyName sama dengan inputan pertama di textfield
-        final keyNameResult = await clients
+        final keyNameResult = await users
             .where("keyName", isEqualTo: data.substring(0, 1).toUpperCase())
             .get();
         //jika sama dan tidak kosong maka di looping untuk mendapatkan data query dan di simpan di queryAwal

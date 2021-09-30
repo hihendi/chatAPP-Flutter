@@ -1,4 +1,6 @@
-import 'package:chatapp/app/data/models/users_model_model.dart';
+import 'dart:html';
+
+import 'package:chatapp/app/data/models/users_model.dart';
 import 'package:chatapp/app/routes/app_pages.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -73,6 +75,7 @@ class AuthController extends GetxController {
         usersModel(UsersModel(
           uid: toUserModel["uid"],
           name: toUserModel["name"],
+          keyName: toUserModel["keyName"],
           email: toUserModel["email"],
           photoUrl: toUserModel["photoUrl"],
           status: toUserModel["status"],
@@ -142,7 +145,8 @@ class AuthController extends GetxController {
         if (userFirestore.data() == null) {
           users.doc(credentialUser.user!.email).set({
             "uid": credentialUser.user!.uid,
-            "name":
+            "name": credentialUser.user!.displayName,
+            "keyName":
                 credentialUser.user!.displayName!.substring(0, 1).toUpperCase(),
             "email": credentialUser.user!.email,
             "photoUrl": credentialUser.user!.photoURL ?? "no image",
@@ -165,6 +169,7 @@ class AuthController extends GetxController {
         usersModel(UsersModel(
           uid: toUserModel["uid"],
           name: toUserModel["name"],
+          keyName: toUserModel["keyName"],
           email: toUserModel["email"],
           photoUrl: toUserModel["photoUrl"],
           status: toUserModel["status"],

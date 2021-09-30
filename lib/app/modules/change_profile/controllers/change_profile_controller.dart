@@ -38,7 +38,8 @@ class ChangeProfileController extends GetxController {
     //Update data ke firestore
     CollectionReference users = firestore.collection("users");
     users.doc(currentUsers!.email).update({
-      "name": name,
+      "name": name.substring(0, 1).toUpperCase() + name.substring(1),
+      "keyname": name.substring(0, 1).toUpperCase(),
       "status": status,
       "lastSignInTime":
           currentUsers!.metadata.lastSignInTime!.toIso8601String(),
@@ -47,7 +48,8 @@ class ChangeProfileController extends GetxController {
 
     //update beberapa parameter ke model
     authController.usersModel.update((user) {
-      user!.name = name;
+      user!.name = name.substring(0, 1).toUpperCase() + name.substring(1);
+      user.keyName = name.substring(0, 1).toUpperCase();
       user.status = status;
       user.lastSignInTime =
           currentUsers!.metadata.lastSignInTime!.toIso8601String();
